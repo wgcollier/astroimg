@@ -1,0 +1,40 @@
+
+Modules:
+    * Control Interface
+       - system startup
+       - system reset
+       - system configuration
+       - receives commands from mission control
+       - route commands to modules
+       - filter and send status telemetry to mission control
+    * Observer Control
+       - scripting
+       - tracking progress
+    * System Monitor / Telemetry Manager
+       - receives telemetry packets from modules
+       - limit checking for telemetry points
+       - exception handling
+    * System Logger (P7)
+    * Data Manager
+    * Imaging
+       - controls camera
+       - integrations, frames, groups
+       - reads out sensor data
+    * Mount Control
+    * Guider
+       - controls guide camera
+       - produces mount correction commands
+    * Heaters
+
+
+Module Base Class:
+    * 
+
+
+Communications Between Modules:
+    * TCP
+    * UDP
+    * I2C
+    * SPI
+    * UART
+    * USB

@@ -1,0 +1,141 @@
+\documentclass[a4paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{../tikz-uml}
+\usetikzlibrary{positioning}
+
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-2.9cm
+\voffset=-2.9cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{\today}
+\title{CCSDS Space Packet Class Diagrams}
+\author{Bill Collier}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+
+\maketitle
+
+If you want to copy and paste the following source code, please take care of white spaces and special characters such as the minus symbol !
+
+\medskip
+\begin{tikzpicture}
+	\umlclass{enum::PktType}
+	{
+		cmd, \\
+		tlm
+	}
+	{}
+\end{tikzpicture}
+
+\medskip
+\begin{tikzpicture}
+	\umlclass{enum::SegFlag}
+	{
+		segmented \\
+		continuation \\
+		lastseg
+	}
+	{}
+\end{tikzpicture}
+
+\medskip
+\begin{tikzpicture}
+	\umlclass 
+	{CcsdsPacket}
+	{vector<uint8\_t> m\_data}
+	{
+          CcsdsPacket(PktType pkytyp, uint16\_t appid, size\_t length, SegFlag segflg, uint16\_t seqno=0) \\
+          void setbytes(size\_t nbytes, size\_t offset, vector<uint8\_t> value) \\
+          vector<uint8\_t> getbytes(size\_t nbytes, size\_t offset) \\
+          bool is\_cmd() \\
+          bool is\_tlm() \\
+          SegFlag get\_segmentflag() \\
+          uint16\_t get\_appid() \\
+          uint16\_t get\_length() \\
+	  virtual bool has\_secondaryheader() \\
+	  virtual bool has\_crc()
+	}
+	
+	\umlclass [template=T, name=classname, y=-7]
+	{CcsdsPacketCrc}
+	{
+		void set\_crc(T); \\
+		T get\_crc(); \\
+		void isvalid\_crc();
+	}
+	{}
+
+	\umlinherit[geometry=--]
+	{CcsdsPacketCrc}{CcsdsPacket}
+\end{tikzpicture}
+
+\medskip
+\begin{tikzpicture}
+	\umlemptyclass{PacketMap}
+
+	\umlclass [y=-4]
+	{PacketMapItem}
+	{
+		type\_info dtype; \\
+		size\_t offset; \\
+		size\_t bytesize;
+	}
+	{}
+
+	\umluniaggreg
+	[geometry=--,
+	 arg2=d, mult2=n,
+	 stereo=map.mnemonic, 
+	 pos stereo=.3]
+	{PacketMap}{PacketMapItem}
+\end{tikzpicture}
+
+\medskip
+\begin{tikzpicture}
+	\umlemptyclass{PacketValueTable}
+
+	\umlclass [y=-4]
+	{PacketValueItem}
+	{
+		type\_info dtype; \\
+		siz\_t offset; \\
+		size\_t bytesize;
+	}
+	{}
+
+	\umluniaggreg
+	[geometry=--,
+	 arg2=d, mult2=n,
+	 stereo=map.mnemonic, 
+	 pos stereo=.3]
+	{PacketValueTable}{PacketValueItem}
+\end{tikzpicture}
+
+\medskip
+\begin{tikzpicture}
+	\umlclass{PacketEngine}
+	{
+		uint16\_t m\_appid \\
+		PacketMap m\_pktmap
+	}
+	{
+		CcsdsPacket make\_cmdpacket() \\
+		CcsdsPacket make\_tlmpacket() \\
+		void encode() \\
+		PacketValueTable decode()
+	}
+\end{tikzpicture}
+
+\end{document}
+

@@ -1,0 +1,50 @@
+Control System:
+   * Send directives
+   * Receive status
+   * Send observation plan
+   * Receive image data
+
+
+Telescope System:
+   * Primary optics
+   * Guide sensors
+   * Filter wheek
+   * Imaging camera
+   * Heaters
+   * Power
+
+
+Imaging Support Computer System:
+   * Telescope controller
+     - Receive directives
+     - Send status
+     - Run observation schedule
+     - Manage heaters
+     - Monitor power
+     - Relay image data
+   * Guidance module
+   * Imaging data module
+
+Data transfer:
+   * CCSDS packets
+   * CCSDS trasfer frames for WiFi transfers
+
+Image Data:
+   * FITS files
+   * CCSDS file
+
+
+CCSDS:
+    * Use Cases:
+      - Directives and status between control system and telescope
+        + CRC
+	+ Small appids
+        + Transfer frames
+	+ Transmission via WiFi
+      - File transfers
+      - Data communications between telescope components
+        + CRC ?
+	+ Large appids
+	+ Transmission via i2c, SPI, UART, UDP
+
+
