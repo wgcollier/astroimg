@@ -28,8 +28,13 @@ Modules:
 
 
 Module Base Class:
-    * 
-
+     --------------
+    * Command Queue
+    * Telemetry Queue
+    * Config
+    * Usage Stats
+     --------------
+    * + 
 
 Communications Between Modules:
     * TCP
