@@ -1,8 +1,8 @@
-#ifndef INCLUDE_CCSDSPACKET
-#define INCLUDE_CCSDSPACKET
+#ifndef INCLUDE_CCSDSPACKET_H
+#define INCLUDE_CCSDSPACKET_H
 
 #include <vector>
-#include<iostream>
+#include <iostream>
 
 enum PktType {cmd, tlm};
 
@@ -54,4 +54,4 @@ class CcsdsPacket
 		std::vector<uint8_t> m_data;
 };
 
-#endif
+#endif // INCLUDE_CCSDSPACKET_H 

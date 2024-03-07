@@ -1,8 +1,11 @@
 # Sources:
 # --------
 add_library(ccsds_lib STATIC
-	ccsdspacket.hpp
-	ccsdspacket.cpp)
+	src/ccsdspacket.cpp)
+
+# Tests:
+# ------
+add_subdirectory(tests)
 
 # Include directories:
 # --------------------

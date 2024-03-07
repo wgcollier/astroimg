@@ -1,4 +1,5 @@
 #include "ccsdspacket.hpp"
+#include "util.hpp"
 
 constexpr bool SWAP = true;
 constexpr bool NOSWAP = false;
@@ -52,28 +53,6 @@ uint16_t seq_word(const SegFlag segflg, const uint16_t seqno)
 	return seqwrd;
 }
 
-void appendword2vector(const uint16_t word, std::vector<uint8_t>& vecdata)
-{
-	uint8_t byt;
-
-	byt = word>>8;
-	vecdata.push_back(byt);
-
-	byt = word;
-	vecdata.push_back(byt);
-}
-
-uint16_t word_frombytes(uint8_t byte0, uint8_t byte1, bool byteswap)
-{
-	int val;
-        if (byteswap)
-	    val = static_cast<int>(byte0)<<8 | static_cast<int>(byte1);
-	else
-	    val = static_cast<int>(byte1)<<8 | static_cast<int>(byte0);
-	return val;
-}
-
-
 CcsdsPrimaryHeader::CcsdsPrimaryHeader(
 				const PktType pkttype,
 				const bool secondaryheader,
@@ -85,12 +64,12 @@ CcsdsPrimaryHeader::CcsdsPrimaryHeader(
 {
 
 	uint16_t word0 = packet_identification(pkttype, segflg, secondaryheader, appid);
-	appendword2vector(word0, m_data);
+	util::appendword2vector(word0, m_data);
 
 	uint16_t word1 = seq_word(segflg, seqno);
-	appendword2vector(word1, m_data);
+	util::appendword2vector(word1, m_data);
 
-	appendword2vector(size, m_data);
+	util::appendword2vector(size, m_data);
 	
 }
 
@@ -157,7 +136,7 @@ int CcsdsPrimaryHeader::get_appid()
 
 	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[0]) << std::endl; 
 	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[1]) << std::endl; 
-	int val = word_frombytes(m_data[0], m_data[1], SWAP);
+	int val = util::word_frombytes(m_data[0], m_data[1], SWAP);
 	val = val & APPID_MASK;
 	std::cout << "Appid: " << std::hex << val << std::endl; 
 	return val;
@@ -170,7 +149,7 @@ int CcsdsPrimaryHeader::get_sequencenumber()
 
 	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[2]) << std::endl; 
 	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[3]) << std::endl; 
-	int val = word_frombytes(m_data[2], m_data[3], SWAP);
+	int val = util::word_frombytes(m_data[2], m_data[3], SWAP);
 	val = val & SEQNO_MASK;
 	std::cout << "Seqno: " << std::hex << val << std::endl; 
 	return val;
@@ -183,7 +162,7 @@ int CcsdsPrimaryHeader::get_size()
 
 	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[4]) << std::endl; 
 	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[5]) << std::endl; 
-	int val = word_frombytes(m_data[4], m_data[5], SWAP);
+	int val = util::word_frombytes(m_data[4], m_data[5], SWAP);
 	std::cout << "Size: " << std::hex << val << std::endl; 
 	return val;
 }

@@ -1,15 +1,17 @@
 # Sources:
 # --------
 add_library(util_lib STATIC
-	util.hpp
-	util.cpp)
+	src/util.cpp)
+
+# Tests:
+# ------
+add_subdirectory(tests)
 
 # Include directories:
 # --------------------
 target_include_directories(util_lib
 	PUBLIC include
 	PRIVATE src)
-
 
 # Link targets:
 # -------------
