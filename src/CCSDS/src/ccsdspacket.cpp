@@ -1,7 +1,7 @@
 #include "ccsdspacket.hpp"
 #include "util.hpp"
 
-constexpr bool SWAP = true;
+constexpr bool SWAP = false;
 constexpr bool NOSWAP = false;
 constexpr uint8_t CMD_MASK = 0x10;
 constexpr uint8_t SEGFLG_MASK = 0xC0;
@@ -134,8 +134,8 @@ int CcsdsPrimaryHeader::get_appid()
 	std::cout << "appid" << std::endl;
 	if (m_data.size() < 6) return false;
 
-	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[0]) << std::endl; 
-	std::cout << "Hdr2: " << std::hex << static_cast<int>(m_data[1]) << std::endl; 
+	std::cout << "Hdr1: " << std::hex << static_cast<int>(m_data[0]) << std::endl; 
+	std::cout << "Hdr1: " << std::hex << static_cast<int>(m_data[1]) << std::endl; 
 	int val = util::word_frombytes(m_data[0], m_data[1], SWAP);
 	val = val & APPID_MASK;
 	std::cout << "Appid: " << std::hex << val << std::endl; 

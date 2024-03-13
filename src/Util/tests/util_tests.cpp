@@ -15,9 +15,9 @@ TEST(DataManipulationTests, Bytes2Word)
 {
     uint8_t byt0(0xA5), byt1(0xC3);
 
-    auto wrd = util::word_frombytes(byt0, byt1, false);
-    EXPECT_EQ(wrd, 0xA5C3);
+    auto wrd1 = util::word_frombytes(byt0, byt1, false);
+    EXPECT_EQ(wrd1, 0xA5C3);
 
-    auto wrd = util::word_frombytes(byt0, byt1, true);
-    EXPECT_EQ(wrd, 0xC3A5);
+    auto wrd2 = util::word_frombytes(byt0, byt1, true);
+    EXPECT_EQ(wrd2, 0xC3A5);
 }

@@ -19,13 +19,17 @@ class ComponentThreadBase
   public:
       ComponentThreadBase(bool start=false) : m_running(start)
       {
+	  std::cout << "ComponentThreadBase Constructed" << std::endl;
           if (start) this->start();
       }
 
       virtual ~ComponentThreadBase()
       {
-	  m_running = false;
-	  m_thread.join();
+	  if (m_running)
+	  {
+	      m_running = false;
+	      m_thread.join();
+	  };
       }
 
       bool start()

@@ -13,11 +13,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Option Settings
 # ---------------
 option(ONLY_COVERAGE "Build only tests necessary for coverage" FALSE)
-option(LIBCPP "Build with libc++" FALSE)
+option(LIBCPP "Build with libc++" TRUE)
 option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" FALSE)
 option(ENABLE_ASAN "Enable address sanitizer" FALSE)
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" FALSE)
-option(ENABLE_TESTING "Enable the building of the test" FALSE)
+option(ENABLE_TESTING "Enable the building of the test" TRUE)
 option(ENABLE_CLANG_TIDY "Enable testing with clang-tidy" FALSE)
 option(ENABLE_CPPCHECK "Enable testing with cppcheck" FALSE)
 option(SIMPLE_BUILD "Build the project as minimally as possible" FALSE)
@@ -44,11 +44,6 @@ if(ENABLE_ASAN)
     target_compile_options(project_options INTERFACE -fsanitize=address)
     target_link_libraries(project_options INTERFACE -fsanitize=address)
 endif()
-
-if(ENABLE_TESTING)
-    enable_testing()
-endif()
-
 
 
 target_compile_options(project_warnings
@@ -121,6 +116,18 @@ if(ENABLE_CLANG_TIDY)
     endif()
 endif()
 
+if(ENABLE_TESTING)
+    enable_testing()
+    include(FetchContent)
+    FetchContent_Declare(
+    	googletest
+    	GIT_REPOSITORY https://github.com/google/googletest.git
+    	GIT_TAG main
+    )
+    FetchContent_MakeAvailable(googletest) # make gtest_main target available
+    message(GTEST_SOURCE="${googletest_SOURCE_DIR}")
+endif()
+
 # Configurable header file for passing configuration parameters
 # -------------------------------------------------------------
 set(PROJECT_VERSION_MAJOR 1)
@@ -191,5 +198,5 @@ message("------------------------------------------")
 message("Version:          \t ${PROJECT_VERSION}")
 message("########################################")
 
-add_subdirectory(tests)
+# add_subdirectory(tests)
 add_subdirectory(src)
